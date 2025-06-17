@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Listar Medicamentos</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="info">
+                    <h1>Listar Medicamentos</h1>
+                    <h3>Procurar medicamento pelo nome:</h3>
+                    <form th:action="@{/medicine/list}" method="GET">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" name="name" placeholder="Digite o nome do medicamento">
+                            <button class="btn btn-primary" type="submit">Procurar</button>
+                        </div>
+                    </form>
+                    <ul class="list-group">
+                        <li th:if="${#lists.isEmpty(medicines)}" class="list-group-item text-center">
+                            Nenhum resultado encontrado
+                        </li>
+                        <li class="list-group-item" th:each="medicine : ${medicines}">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <strong>Nome:</strong> <span th:text="${medicine.name}"></span>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Dosagem:</strong> <span th:text="${medicine.dosage}"></span>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Formato:</strong> <span th:text="${medicine.format}"></span>
+                                </li>
+                            </ul>
+                            <div class="button">
+                                <a id="btn-show" 
+                                th:href="@{'/medicine/show/' + ${medicine.id}}" 
+                                class="btn btn-info btn-sm">
+                                Ver detalhes
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

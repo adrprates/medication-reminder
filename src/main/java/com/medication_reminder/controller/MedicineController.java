@@ -9,19 +9,20 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+@RequestMapping(value = "/medicine")
 @Controller
 public class MedicineController {
 
     @Autowired
     private MedicineService medicineService;
 
-    @GetMapping("/medicine/create")
+    @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("medicine", new Medicine());
         return "medicine/create";
     }
 
-    @PostMapping("/medicine/save")
+    @PostMapping("/save")
     public String save(@ModelAttribute @Valid Medicine medicine, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("medicine", medicine);
@@ -35,7 +36,7 @@ public class MedicineController {
         return "redirect:/medicine/list";
     }
 
-    @GetMapping("/medicine/list")
+    @GetMapping("/list")
     public String list(@RequestParam(required = false) String name, Model model) {
         if(name == null || name.isEmpty()) {
             model.addAttribute("medicines", medicineService.getAllMedicines());
@@ -45,20 +46,20 @@ public class MedicineController {
         return "medicine/list";
     }
 
-    @GetMapping("/medicine/show/{id}")
+    @GetMapping("/show/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         model.addAttribute("medicine", medicineService.getMedicineById(id));
         return "medicine/show";
     }
 
-    @GetMapping("/medicine/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String edit(@PathVariable (value = "id") Long id, Model model) {
         Medicine medicine = medicineService.getMedicineById(id);
         model.addAttribute("medicine", medicine);
         return "medicine/edit";
     }
 
-    @GetMapping("/medicine/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String delete(@PathVariable (value = "id") Long id) {
         medicineService.deleteMedicineById(id);
         return "redirect:/medicine/list";

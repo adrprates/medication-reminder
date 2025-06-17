@@ -22,7 +22,7 @@ public class MedicineImpl implements MedicineService {
 
     @Override
     public List<Medicine> getAllMedicinesByNameContaining(String name) {
-        return medicineRepository.findByNameContaining(name);
+        return medicineRepository.findByNameContainingIgnoreCase(name);
     }
 
     @Override
