@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <title>Editar Lembrete</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #5861E2;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #fff;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 0 auto 80px;
+        }
+
+        .form-group,
+        .mb-3 {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .form-label.text-white {
+            color: #333 !important;
+        }
+
+        input[type="text"],
+        input[type="time"],
+        select,
+        textarea {
+            font-size: 14px;
+        }
+
+        button {
+            background: #5861E2;
+            color: #fff;
+            font-weight: bold;
+            font-size: 18px;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #4750c7;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background-color: #5861e2;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .bottom-nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bottom-nav a span {
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .bottom-nav a:hover {
+            color: #dfe0ff;
+        }
+
+        .weekdays-container {
+            margin-top: 10px;
+        }
+
+        .weekdays-row label {
+            width: 50px;
+            height: 50px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 6px;
+            font-weight: bold;
+            color: #333;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        input[type="checkbox"]:checked + label {
+            background-color: #5861e2;
+            color: #fff;
+            border: 2px solid #4750c7;
+        }
+
+        .chip {
+            background-color: #a0e7e5;
+            color: #004d4d;
+            padding: 6px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        .chip .remove-btn {
+            background: none;
+            border: none;
+            color: #004d4d;
+            margin-left: 8px;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .chip .remove-btn:hover {
+            color: #007f7f;
+        }
+
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            form {
+                padding: 15px;
+                margin-bottom: 90px;
+            }
+
+            label,
+            input,
+            select,
+            textarea {
+                font-size: 14px;
+            }
+
+            .weekdays-row label {
+                width: 45px;
+                height: 45px;
+                margin: 4px;
+                font-size: 13px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<h1>Editar Lembrete</h1>
+
+<form th:action="@{/reminder/save}" th:object="${reminder}" method="post" class="text-start">
+    <input type="hidden" th:field="*{id}" />
+
+    <div class="form-group">
+        <label for="title">Título</label>
+        <input type="text" id="title" th:field="*{title}" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="hour">Horário</label>
+        <input type="time" id="hour" th:field="*{hour}" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="weekdays">Dias da Semana</label>
+        <div class="weekdays-container text-center">
+            <div class="weekdays-row d-flex justify-content-center flex-wrap mb-2">
+                <input type="checkbox" id="seg" name="weekDays" value="MONDAY" hidden th:checked="${reminder.weekDays.contains(T(java.time.DayOfWeek).MONDAY)}" />
+                <label for="seg">Seg</label>
+
+                <input type="checkbox" id="ter" name="weekDays" value="TUESDAY" hidden th:checked="${reminder.weekDays.contains(T(java.time.DayOfWeek).TUESDAY)}" />
+                <label for="ter">Ter</label>
+
+                <input type="checkbox" id="qua" name="weekDays" value="WEDNESDAY" hidden th:checked="${reminder.weekDays.contains(T(java.time.DayOfWeek).WEDNESDAY)}" />
+                <label for="qua">Qua</label>
+
+                <input type="checkbox" id="qui" name="weekDays" value="THURSDAY" hidden th:checked="${reminder.weekDays.contains(T(java.time.DayOfWeek).THURSDAY)}" />
+                <label for="qui">Qui</label>
+            </div>
+
+            <div class="weekdays-row d-flex justify-content-center flex-wrap">
+                <input type="checkbox" id="sex" name="weekDays" value="FRIDAY" hidden th:checked="${reminder.weekDays.contains(T(java.time.DayOfWeek).FRIDAY)}" />
+                <label for="sex">Sex</label>
+
+                <input type="checkbox" id="sab" name="weekDays" value="SATURDAY" hidden th:checked="${reminder.weekDays.contains(T(java.time.DayOfWeek).SATURDAY)}" />
+                <label for="sab">Sáb</label>
+
+                <input type="checkbox" id="dom" name="weekDays" value="SUNDAY" hidden th:checked="${reminder.weekDays.contains(T(java.time.DayOfWeek).SUNDAY)}" />
+                <label for="dom">Dom</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="medicamentoSelect" class="form-label">Selecione um medicamento:</label>
+        <select id="medicamentoSelect" name="medicineIds" multiple class="form-select">
+            <option th:each="med : ${medicines}"
+                    th:value="${med.id}"
+                    th:text="${med.name}"
+                    th:selected="${medicineIds.contains(med.id)}">
+            </option>
+        </select>
+    </div>
+
+    <div id="medicamentoChips" class="d-flex flex-wrap gap-2 mt-2"></div>
+
+    <div class="form-group">
+        <label for="note">Observação</label>
+        <textarea id="note" rows="4" class="form-control" th:field="*{note}"></textarea>
+    </div>
+
+    <div class="d-grid mt-4">
+        <button type="submit">Editar</button>
+    </div>
+</form>
+
+<!-- Navbar inferior -->
+<nav class="bottom-nav" role="navigation" aria-label="Navegação principal">
+    <a href="/inicio">
+        <i class="bi bi-house-fill" aria-hidden="true"></i>
+        <span>Início</span>
+    </a>
+    <a href="/medicamentos">
+        <i class="bi bi-capsule-pill" aria-hidden="true"></i>
+        <span>Medicamentos</span>
+    </a>
+    <a href="/lembretes">
+        <i class="bi bi-alarm-fill" aria-hidden="true"></i>
+        <span>Lembretes</span>
+    </a>
+</nav>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function () {
+        const selected = /*[[${medicineIds}]]*/ [];
+        $('#medicamentoSelect').select2({
+            placeholder: "Escolha um medicamento",
+            allowClear: true,
+            width: '100%'
+        }).val(selected).trigger('change');
+    });
+    /*]]>*/
+</script>
+</body>
+</html>

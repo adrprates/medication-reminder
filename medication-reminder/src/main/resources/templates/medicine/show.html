@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <title>Detalhes Medicamento</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 80px;
+        }
+
+        h3 {
+            font-size: 20px;
+            color: #333;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .med-title {
+            width: 100%;
+            max-width: 100%;
+            font-size: 26px;
+            color: #fff;
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 10px;
+            background-color: #5861e2;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .information {
+            background: #f8f9fa;
+            padding: 25px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .information p {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        button {
+            font-weight: bold;
+            font-size: 16px;
+            padding: 12px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #00a2ff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #0092e0;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background-color: #5861e2;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .bottom-nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bottom-nav a span {
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .bottom-nav a:hover {
+            color: #dfe0ff;
+        }
+
+        @media (max-width: 576px) {
+            .med-title {
+                font-size: 20px;
+                padding: 20px;
+            }
+
+            h3 {
+                font-size: 18px;
+            }
+
+            .information p {
+                font-size: 14px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container d-flex flex-column align-items-center justify-content-center py-5">
+    <div class="row w-100 justify-content-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+            <h3 class="text-center mb-4">Detalhes Medicamento</h3>
+
+            <div class="d-flex justify-content-center mb-4">
+                <h2 class="med-title" th:text="${medicine.name}">Nome Medicamento</h2>
+            </div>
+
+            <div class="information mb-4">
+                <h3>Informações Medicamento</h3>
+                <p><strong>Nome:</strong> <span th:text="${medicine.name}">Nome</span></p>
+                <p><strong>Dosagem:</strong> <span th:text="${medicine.dosage}">500mg</span></p>
+                <p><strong>Formato:</strong> <span th:text="${medicine.format}">Formato</span></p>
+                <p><strong>Observações:</strong> <span th:text="${medicine.note}">Observações</span></p>
+            </div>
+
+            <div class="d-grid gap-2">
+                <a th:href="@{'/medicine/edit/' + ${medicine.id}}" class="btn btn-primary">Editar</a>
+                <a th:href="@{'/medicine/delete/' + ${medicine.id}}" class="btn btn-danger">Excluir</a>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="bottom-nav">
+    <a th:href="@{/inicio}">
+        <i class="bi bi-house-fill"></i>
+        <span>Início</span>
+    </a>
+    <a th:href="@{/medicine/list}">
+        <i class="bi bi-capsule-pill"></i>
+        <span>Medicamentos</span>
+    </a>
+    <a th:href="@{/reminder/list}">
+        <i class="bi bi-alarm-fill"></i>
+        <span>Lembretes</span>
+    </a>
+</nav>
+</body>
+</html>
